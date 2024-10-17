@@ -1,5 +1,7 @@
 package com.example.MovieApp.service;
 
+import com.example.MovieApp.entity.Movie;
+import com.example.MovieApp.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
