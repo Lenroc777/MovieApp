@@ -1,8 +1,8 @@
 package com.movieapp.movieapplication.service;
 
-import com.movieapp.movieapplication.model.Movie;
+//import com.movieapp.movieapplication.model.Movie;
 import com.movieapp.movieapplication.model.User;
-import com.movieapp.movieapplication.repository.MovieRepository;
+//import com.movieapp.movieapplication.repository.MovieRepository;
 import com.movieapp.movieapplication.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
