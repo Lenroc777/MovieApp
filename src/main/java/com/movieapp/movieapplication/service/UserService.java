@@ -110,8 +110,8 @@ public class UserService {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(()-> new IllegalArgumentException("Movie not found"));
         emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
-        if (!user.getFavoriteMovies().contains(movieId)) {
-            user.getFavoriteMovies().add(movieId);
+        if (!user.getWatchedMovies().contains(movieId)) {
+            user.getWatchedMovies().add(movieId);
             userRepository.save(user);
         }
         emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");

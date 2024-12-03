@@ -51,7 +51,7 @@ public class SecurityConfig {
                         // Endpoints dla użytkownika z rolą USER
                         .requestMatchers(HttpMethod.GET, "/api/movies/**").hasAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST, "/api/reviews").hasAuthority("ROLE_USER")
-                        .requestMatchers(HttpMethod.PUT, "/api/users/{userId}/watched/**", "/api/users/{userId}/favorite/**").hasAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/{userId}/watched/**", "/api/users/{userId}/favorite/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 
                         // Endpoints dla administratora (ROLE_ADMIN)
                         .requestMatchers(HttpMethod.POST, "/api/movies", "/api/categories", "/api/languages").hasAuthority("ROLE_ADMIN")
