@@ -37,7 +37,7 @@ public class UserController {
         try {
             User user = userService.loginUser(request.getEmail(), request.getPassword());
             String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole(), user.getEmail()); // Generowanie tokenu JWT
-//            String validateToken = jwtUtil.validateToken(token);
+            //String validateToken = jwtUtil.validateToken(token);
             System.out.println(jwtUtil.extractRole(token));
             return ResponseEntity.ok("Token: " + token); // Zwrócenie tokenu
         } catch (IllegalArgumentException e) {

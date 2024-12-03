@@ -1,8 +1,8 @@
 package com.movieapp.movieapplication.service;
 
-//import com.movieapp.movieapplication.model.Movie;
+import com.movieapp.movieapplication.model.Movie;
 import com.movieapp.movieapplication.model.User;
-//import com.movieapp.movieapplication.repository.MovieRepository;
+import com.movieapp.movieapplication.repository.MovieRepository;
 import com.movieapp.movieapplication.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,19 +15,16 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-//    private final EmailService emailService;
-//    private final MovieRepository movieRepository;
+    private final EmailService emailService;
+    private final MovieRepository movieRepository;
 
-//    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, EmailService emailService, MovieRepository movieRepository) {
-//        this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.emailService = emailService;
-//        this.movieRepository = movieRepository;
-//    }
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, EmailService emailService, MovieRepository movieRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+        this.movieRepository = movieRepository;
     }
+
 
     public User registerUser(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
@@ -91,28 +88,28 @@ public class UserService {
         }
     }
 
-//    public User addFavoriteMovie(String userId, String movieId) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//        if (!user.getFavoriteMovies().contains(movieId)) {
-//            user.getFavoriteMovies().add(movieId);
-//            userRepository.save(user);
-//        }
-//        return user;
+    public User addFavoriteMovie(String userId, String movieId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!user.getFavoriteMovies().contains(movieId)) {
+            user.getFavoriteMovies().add(movieId);
+            userRepository.save(user);
+        }
+        return user;
     }
-//    public User addWatchedMovie(String userId, String movieId) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//        Movie movie = movieRepository.findById(movieId)
-//                .orElseThrow(()-> new IllegalArgumentException("Movie not found"));
-//        emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
-//        if (!user.getFavoriteMovies().contains(movieId)) {
-//            user.getFavoriteMovies().add(movieId);
-//            userRepository.save(user);
-//        }
-//        emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
-//        return user;
-//    }
+    public User addWatchedMovie(String userId, String movieId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(()-> new IllegalArgumentException("Movie not found"));
+        emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
+        if (!user.getFavoriteMovies().contains(movieId)) {
+            user.getFavoriteMovies().add(movieId);
+            userRepository.save(user);
+        }
+        emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
+        return user;
+    }
 
 
-//}
+}
