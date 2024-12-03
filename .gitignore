@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-secret.properties
+src/secret.properties

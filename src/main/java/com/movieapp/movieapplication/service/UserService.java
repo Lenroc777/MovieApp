@@ -91,12 +91,19 @@ public class UserService {
     public User addFavoriteMovie(String userId, String movieId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalArgumentException("Movie not found"));
+
         if (!user.getFavoriteMovies().contains(movieId)) {
             user.getFavoriteMovies().add(movieId);
             userRepository.save(user);
         }
+        // Dodajemy wysyłanie e-maila po dodaniu filmu do ulubionych
+        emailService.sendEmail(user.getEmail(), "Dodano do ulubionych", "Film " + movie.getTitle() + " został dodany do Twoich ulubionych.");
+
         return user;
     }
+
     public User addWatchedMovie(String userId, String movieId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
