@@ -1,75 +1,45 @@
-package com.movieapp.movieapplication.model;
+package com.movieapp.movieapplication.service;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.movieapp.movieapplication.model.Review;
+import com.movieapp.movieapplication.repository.ReviewRepository;
+import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
-@Document(collection = "reviews")
-public class Review {
-    @Id
-    private String id; // Unikalne pole ID dla MongoDB
-    private String movieId; // ID filmu, którego dotyczy recenzja
-    private String userId; // ID użytkownika, który dodał recenzję
-    private int rating; // Zakres np. 1-5
-    private String reviewText; // Treść recenzji
-    private LocalDateTime reviewDate; // Data recenzji
+@Service
+public class ReviewService {
 
-    public Review(String id, String movieId, String userId, int rating, String reviewText, LocalDateTime reviewDate) {
-        this.id = id;
-        this.movieId = movieId;
-        this.userId = userId;
-        this.rating = rating;
-        this.reviewText = reviewText;
-        this.reviewDate = reviewDate;
+    private final ReviewRepository reviewRepository;
+
+    public ReviewService(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
     }
 
-    // Gettery i settery
-    public String getId() {
-        return id;
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Optional<Review> getReviewById(String id) {
+        return reviewRepository.findById(id);
     }
 
-    public String getMovieId() {
-        return movieId;
+    public Review addReview(Review review) {
+        return reviewRepository.save(review);
     }
 
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
+    public void deleteReview(String id) {
+        reviewRepository.deleteById(id);
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public LocalDateTime getReviewDate() {
-        return reviewDate;
-    }
-
-    public void setReviewDate(LocalDateTime reviewDate) {
-        this.reviewDate = reviewDate;
+    public Review updateReview(String id, Review review) {
+        return reviewRepository.findById(id).map(existingReview -> {
+            existingReview.setMovieId(review.getMovieId());
+            existingReview.setUserId(review.getUserId());
+            existingReview.setRating(review.getRating());
+            existingReview.setReviewText(review.getReviewText());
+            existingReview.setReviewDate(review.getReviewDate());
+            return reviewRepository.save(existingReview);
+        }).orElseThrow(() -> new RuntimeException("Review not found with id: " + id));
     }
 }
