@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Publiczne endpointy dostępne bez uwierzytelnienia 46 zmiana linijki
-                        .requestMatchers("/api/users/register", "/api/users/login", "/swagger-ui/", "v3/api-docs/", "/api/movies/export", "/api/movies/import").permitAll()
+                        .requestMatchers("/api/users/register", "/api/users/login", "/v3/api-docs/swagger-config","/swagger-ui/", "/v3/api-docs/", "/api/movies/export", "/api/movies/export").permitAll()
 
                         // Endpoints dla użytkownika z rolą USER
                         .requestMatchers(HttpMethod.GET, "/api/movies/**").hasAuthority("ROLE_USER")
